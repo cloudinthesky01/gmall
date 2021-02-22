@@ -2,7 +2,11 @@ package com.project.utils
 
 import java.util.Properties
 
+import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.kafka.common.serialization.StringDeserializer
+import org.apache.spark.streaming.StreamingContext
+import org.apache.spark.streaming.dstream.InputDStream
+import org.apache.spark.streaming.kafka010.{ConsumerStrategies, KafkaUtils, LocationStrategies}
 
 object MyKafkaUtil {
   private val properties: Properties = PropertiesUtil.load("config.properties")
@@ -18,4 +22,11 @@ object MyKafkaUtil {
     "enable.auto.commit" -> (true: java.lang.Boolean)
   )
 
+  def getKafkaStream(topic: String, ssc: StreamingContext): InputDStream[ConsumerRecord[String,String]] = {
+    val kafkaDStream: InputDStream[ConsumerRecord[String, String]] = KafkaUtils.createDirectStream[String, String](
+      ssc, LocationStrategies.PreferConsistent,
+      ConsumerStrategies.Subscribe[String, String](Array(topic), kafkaParam)
+    )
+    kafkaDStream
+  }
 }

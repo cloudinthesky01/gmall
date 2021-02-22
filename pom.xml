@@ -11,6 +11,7 @@
     <modules>
         <module>gmall-common</module>
         <module>gmall-realtime</module>
+        <module>dw-canal</module>
     </modules>
     <properties>
         <spark.version>3.0.0</spark.version>
