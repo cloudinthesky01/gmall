@@ -17,7 +17,7 @@ object MyKafkaUtil {
     "bootstrap.servers" -> brokerList,
     "key.deserializer" -> classOf[StringDeserializer],
     "value.deserializer" -> classOf[StringDeserializer],
-    "group.id" -> "bigData",
+    "group.id" -> "bigData_0923",
     "auto.offset.reset" -> "latest",
     "enable.auto.commit" -> (true: java.lang.Boolean)
   )

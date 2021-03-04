@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,5 +74,14 @@ public class PublisherController {
         result.put("today", todayMap);
 
         return JSON.toJSONString(result);
+    }
+
+    @RequestMapping("sale_detail")
+    public String getSaleDetail(@RequestParam("date") String date,
+                                @RequestParam("startpage") int startpage,
+                                @RequestParam("size") int size,
+                                @RequestParam("keyword") String keyword
+    ) throws IOException {
+        return publisherService.getSaleDetail(date,startpage,size,keyword);
     }
 }

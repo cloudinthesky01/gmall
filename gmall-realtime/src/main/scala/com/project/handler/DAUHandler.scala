@@ -13,6 +13,11 @@ import org.apache.spark.streaming.dstream.DStream
 import redis.clients.jedis.Jedis
 
 object DAUHandler {
+  /**
+   * 批次内去重
+   * @param fileterByRedisDStream
+   * @return
+   */
   def filterByMid(fileterByRedisDStream: DStream[StartUpLog]) = {
     val midAndLogDateToLog: DStream[((String, String), StartUpLog)] = fileterByRedisDStream.map(
       log => {
@@ -71,7 +76,7 @@ val sdf: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd")
       //2.获取数据
       val redisKey="DAU:" + sdf.format(new Date(System.currentTimeMillis()))
       val midSet: util.Set[String] = jedisClient.smembers(redisKey)
-
+      println(Thread.currentThread().getName+"----"+midSet)
       //3.归还连接
       jedisClient.close()
 
@@ -81,6 +86,8 @@ val sdf: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd")
       //5.过滤数据
       val result: RDD[StartUpLog] = rdd.filter(log => {
         !midBC.value.contains(log.mid)
+
+//        !midSet.contains(log.mid)
       })
       result
     })

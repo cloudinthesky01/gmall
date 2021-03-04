@@ -7,12 +7,10 @@ import com.project.bean.StartUpLog
 import com.project.constants.GmallConstants
 import com.project.handler.DAUHandler
 import com.project.utils.MyKafkaUtil
-import org.apache.hadoop.hbase.HBaseConfiguration
 import org.apache.kafka.clients.consumer.ConsumerRecord
 import org.apache.spark.SparkConf
 import org.apache.spark.streaming.dstream.{DStream, InputDStream}
 import org.apache.spark.streaming.{Seconds, StreamingContext}
-import org.apache.phoenix.spark._
 
 object DAUApp {
   def main(args: Array[String]): Unit = {
@@ -45,6 +43,7 @@ object DAUApp {
     filterByMidDStream.cache()
 //    filterByMidDStream.count().print()
     //写入hbase
+/*    import org.apache.phoenix.spark._
     filterByMidDStream.foreachRDD(
       rdd => {
         rdd.saveToPhoenix(
@@ -54,7 +53,7 @@ object DAUApp {
           Some("hadoop102,hadoop103,hadoop104:2181")
         )
       }
-    )
+    )*/
     ssc.start()
     ssc.awaitTermination()
   }
